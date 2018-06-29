@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                             xmlns:app="http://schemas.android.com/apk/res-auto"
+                                             xmlns:tools="http://schemas.android.com/tools"
+                                             android:layout_width="match_parent"
+                                             android:layout_height="wrap_content"
+                                             android:background="@drawable/gradient"
+                                             tools:background="@color/colorForeground">
+
+    <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:paddingTop="4dp"
+            android:textColor="#FFF"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Jey Lo"/>
+
+    <TextView
+            android:id="@+id/subTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:textColor="#FFF"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/name"
+            tools:text="New York"/>
+
+
+    <ImageView
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground"
+            android:id="@+id/alerts"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="32dp"
+            app:layout_constraintEnd_toStartOf="@+id/places"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/places"
+            app:srcCompat="@drawable/ic_notifications" android:padding="8dp"/>
+
+    <ImageView
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground"
+            android:id="@+id/places"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toStartOf="@+id/shots"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/alerts"
+            app:layout_constraintTop_toBottomOf="@id/subTitle"
+            app:srcCompat="@drawable/ic_favorite" android:padding="8dp"/>
+
+    <ImageView
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground"
+            android:id="@+id/shots"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            app:layout_constraintEnd_toStartOf="@+id/friends"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/places"
+            app:layout_constraintTop_toTopOf="@+id/places"
+            app:srcCompat="@drawable/ic_shots" android:padding="8dp"/>
+
+    <ImageView
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground"
+            android:id="@+id/friends"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/shots"
+            app:layout_constraintTop_toTopOf="@+id/shots"
+            app:srcCompat="@drawable/ic_chain" android:padding="8dp"/>
+
+    <TextView
+            android:id="@+id/freindsLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Friends"
+            android:textAlignment="center"
+            android:textColor="#9A9FA5"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@+id/friends"
+            app:layout_constraintStart_toStartOf="@+id/friends"
+            app:layout_constraintTop_toBottomOf="@+id/alerts"/>
+
+    <TextView
+            android:id="@+id/shotsLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Shots"
+            android:textAlignment="center"
+            android:textColor="#9A9FA5"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@+id/shots"
+            app:layout_constraintStart_toStartOf="@+id/shots"
+            app:layout_constraintTop_toBottomOf="@+id/shots"/>
+
+    <TextView
+            android:id="@+id/placesLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Places"
+            android:textAlignment="center"
+            android:textColor="#9A9FA5"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@+id/places"
+            app:layout_constraintStart_toStartOf="@+id/places"
+            app:layout_constraintTop_toBottomOf="@+id/places"/>
+
+    <TextView
+            android:id="@+id/alertsLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="Alerts"
+            android:textAlignment="center"
+            android:textColor="#9A9FA5"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/alerts"
+            app:layout_constraintStart_toStartOf="@+id/alerts"
+            app:layout_constraintTop_toBottomOf="@+id/alerts"/>
+</android.support.constraint.ConstraintLayout>

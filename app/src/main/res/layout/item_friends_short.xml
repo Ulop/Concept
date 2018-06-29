@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:paddingEnd="16dp"
+    android:clickable="true"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:focusable="true">
+
+    <ImageView
+        android:clickable="false"
+        android:id="@+id/friendAvatar"
+        android:layout_width="72dp"
+        android:layout_height="92dp"
+        android:paddingBottom="20dp"
+        tools:srcCompat="@mipmap/ic_launcher_round" />
+
+    <TextView
+        android:clickable="false"
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:textColor="#40536F"
+        android:textSize="12sp"
+        tools:text="Joshua" />
+</FrameLayout>
