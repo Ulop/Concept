@@ -5,6 +5,7 @@ import io.ulop.concept.db.entity.PersonFriends
 
 interface PersonRepository {
     fun getPersons(): List<Person>
+    fun getPerson(id: String):Person
     fun addPerson(vararg person: Person) {}
 
     fun personCount(): Int
@@ -13,6 +14,9 @@ interface PersonRepository {
 }
 
 class RandomPersonRepository : PersonRepository {
+    override fun getPerson(id: String): Person {
+        return persons.first { it.id == id }
+    }
 
     private val names = mapOf(
             "female" to listOf(

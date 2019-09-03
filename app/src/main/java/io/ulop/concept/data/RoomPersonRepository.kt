@@ -14,28 +14,34 @@ class RoomPersonRepository(application: Application, val coroutineScope: Corouti
             .databaseBuilder(application.applicationContext, ConceptDatabase::class.java, "concept-db")
             .build().getDao()
 
+    override fun getPerson(id: String): Person {
+        return dao.getPerson(id = id).let(::mapDbModelToEntity)
+    }
+
     override fun getPersons(): List<Person> {
-        return dao.getPersons().map { dbPerson ->
-            Person(
-                    id = dbPerson.id,
-                    name = dbPerson.name,
-                    surname = dbPerson.surname,
-                    avatar = dbPerson.avatar,
-                    about = dbPerson.about,
-                    place = dbPerson.place,
-                    shots = dao.getPersonShots(personId = dbPerson.id).map { Shot(it.url, it.color) }.toMutableList(),
-                    friends = dao.getPersonFriends(dbPerson.id).map { dp ->
-                        Person(
-                                id = dp.id,
-                                name = dp.name,
-                                surname = dp.surname,
-                                avatar = dp.avatar,
-                                about = dp.about,
-                                place = dp.place
-                        )
-                    }.toMutableList()
-            )
-        }
+        return dao.getPersons().map(::mapDbModelToEntity)
+    }
+
+    private fun mapDbModelToEntity(dbPerson: io.ulop.concept.db.entity.Person): Person {
+        return Person(
+                id = dbPerson.id,
+                name = dbPerson.name,
+                surname = dbPerson.surname,
+                avatar = dbPerson.avatar,
+                about = dbPerson.about,
+                place = dbPerson.place,
+                shots = dao.getPersonShots(personId = dbPerson.id).map { Shot(it.url, it.color) }.toMutableList(),
+                friends = dao.getPersonFriends(dbPerson.id).map { dp ->
+                    Person(
+                            id = dp.id,
+                            name = dp.name,
+                            surname = dp.surname,
+                            avatar = dp.avatar,
+                            about = dp.about,
+                            place = dp.place
+                    )
+                }.toMutableList()
+        )
     }
 
     override fun addPerson(vararg person: Person)  {

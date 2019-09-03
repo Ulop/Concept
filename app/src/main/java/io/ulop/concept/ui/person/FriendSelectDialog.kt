@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer
 import io.ulop.concept.R
 import io.ulop.concept.adapter.friendsDialogDelegate
 import io.ulop.concept.adapter.makeAdapter
+import io.ulop.concept.base.event.Event
 import io.ulop.concept.base.viewstate.ViewState
 import io.ulop.concept.data.ListItem
 import kotlinx.android.synthetic.main.dialog_fragment_friends.*
@@ -41,7 +42,7 @@ class FriendSelectDialog : androidx.fragment.app.DialogFragment() {
                             about = it.about,
                             avatar = it.avatar,
                             action = { id ->
-                                personPageViewModel.personId.setValue(id)
+                                personPageViewModel.personId.setValue((id))
                                 dismiss()
                             }
                     )

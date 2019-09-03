@@ -31,4 +31,7 @@ interface PersonDao {
 
     @Query("SELECT * FROM Shot WHERE Shot.person_id = :personId")
     fun getPersonShots(personId: String): MutableList<Shot>
+
+    @Query("SELECT * FROM Person WHERE Person.id = :id")
+    fun getPerson(id: String): Person
 }
