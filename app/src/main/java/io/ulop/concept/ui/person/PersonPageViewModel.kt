@@ -1,9 +1,9 @@
 package io.ulop.concept.ui.person
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import io.ulop.concept.base.event.Event
 import io.ulop.concept.base.livedata.StackLiveData
 import io.ulop.concept.base.viewstate.ViewState
 import io.ulop.concept.data.ListItem
@@ -21,9 +21,7 @@ class PersonPageViewModel(
 
     val personId = StackLiveData<String>()
 
-    private val _viewState = MutableLiveData<ViewState>()
-    val viewState: LiveData<ViewState>
-        get() = _viewState
+    val viewState = MutableLiveData<Event<ViewState>>()
 
 
     companion object {
@@ -33,7 +31,7 @@ class PersonPageViewModel(
     }
 
     init {
-        _viewState.value = ViewState.Idle
+        viewState.value = Event(ViewState.Idle)
         personId.setValue(id)
         personId.observeForever { pID ->
             if (pID != null) {
@@ -47,8 +45,7 @@ class PersonPageViewModel(
                                             "About", "Show all text",
                                             "See all",
                                             {
-                                                _viewState.value = ViewState.ItemClick(it)
-                                                _viewState.value = ViewState.Idle
+                                                viewState.postValue(Event(ViewState.ItemClick(it)))
 
                                             },
                                             SECTION_ABOUT
@@ -58,8 +55,7 @@ class PersonPageViewModel(
                                             "Friends", null,
                                             "See all",
                                             {
-                                                _viewState.value = ViewState.ItemClick(it)
-                                                _viewState.value = ViewState.Idle
+                                                viewState.postValue(Event(ViewState.ItemClick(it)))
                                             },
                                             SECTION_FRIENDS
 
@@ -87,8 +83,8 @@ class PersonPageViewModel(
 
     }
 
-    fun setState(sate : ViewState){
-        _viewState.value = sate
+    fun setState(sate: ViewState) {
+        viewState.value = Event(sate)
     }
 
 }

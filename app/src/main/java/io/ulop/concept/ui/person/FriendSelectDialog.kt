@@ -1,14 +1,11 @@
 package io.ulop.concept.ui.person
 
-import androidx.lifecycle.Observer
 import android.content.DialogInterface
 import android.os.Bundle
-import androidx.fragment.app.DialogFragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import io.ulop.concept.R
 import io.ulop.concept.adapter.friendsDialogDelegate
 import io.ulop.concept.adapter.makeAdapter

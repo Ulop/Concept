@@ -1,19 +1,18 @@
 package io.ulop.concept.base.flow
 
-import android.system.Os.close
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.channelFlow
-import kotlinx.coroutines.flow.flowViaChannel
+import kotlinx.coroutines.flow.collect
 
 
 @UseExperimental(ExperimentalCoroutinesApi::class)
 @FlowPreview
-fun <T> LiveData<T>.asFlow() = channelFlow<T?> {
+fun <T> LiveData<T>.asFlow() = channelFlow {
     offer(value)
     val observer = Observer<T> { t -> offer(t) }
     observeForever(observer)
