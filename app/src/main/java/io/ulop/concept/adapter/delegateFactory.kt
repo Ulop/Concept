@@ -3,8 +3,10 @@ package io.ulop.concept.adapter
 import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import com.hannesdorfmann.adapterdelegates3.AbsListItemAdapterDelegate
 import com.hannesdorfmann.adapterdelegates3.AdapterDelegate
+import com.hannesdorfmann.adapterdelegates3.AsyncListDifferDelegationAdapter
 import com.hannesdorfmann.adapterdelegates3.ListDelegationAdapter
 import io.ulop.concept.base.ext.inflate
 import io.ulop.concept.data.ListItem
@@ -28,8 +30,8 @@ inline fun <reified T : ListItem> AbstractAdapter.delegate(layout: Int, crossinl
 }
 
 inline fun <reified T : ListItem> newDelegate(layout: Int, crossinline block: (View, T) -> Unit) =
-        object : AbsListItemAdapterDelegate<T, ListItem, androidx.recyclerview.widget.RecyclerView.ViewHolder>() {
-            override fun onCreateViewHolder(parent: ViewGroup): androidx.recyclerview.widget.RecyclerView.ViewHolder {
+        object : AbsListItemAdapterDelegate<T, ListItem, RecyclerView.ViewHolder>() {
+            override fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
                 return BaseVH(parent.inflate(layout))
             }
 
@@ -37,13 +39,13 @@ inline fun <reified T : ListItem> newDelegate(layout: Int, crossinline block: (V
                 return item is T
             }
 
-            override fun onBindViewHolder(item: T, viewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder, payloads: MutableList<Any>) {
+            override fun onBindViewHolder(item: T, viewHolder: RecyclerView.ViewHolder, payloads: MutableList<Any>) {
                 block(viewHolder.itemView, item)
             }
 
         }
 
-class BaseVH(view: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(view){
+class BaseVH(view: View) : RecyclerView.ViewHolder(view) {
     companion object {
         var count = 0
     }
@@ -53,7 +55,7 @@ class BaseVH(view: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(
     }
 }
 
-class AbstractAdapter(delegates: List<AdapterDelegate<MutableList<ListItem>>> = emptyList()) : ListDelegationAdapter<MutableList<ListItem>>() {
+class AbstractAdapter(delegates: List<AdapterDelegate<MutableList<ListItem>>> = emptyList()) : AsyncListDifferDelegationAdapter<ListItem>(diffCallback) {
     init {
         items = mutableListOf()
         delegates.forEach { delegate ->
@@ -67,10 +69,20 @@ class AbstractAdapter(delegates: List<AdapterDelegate<MutableList<ListItem>>> = 
     }
 
     fun setData(data: List<ListItem>): AbstractAdapter {
-        items.clear()
-        items.addAll(data)
-        notifyDataSetChanged()
+        items = data
         return this
+    }
+
+    companion object {
+        private val diffCallback: DiffUtil.ItemCallback<ListItem> = object : DiffUtil.ItemCallback<ListItem>() {
+            override fun areItemsTheSame(oldItem: ListItem, newItem: ListItem): Boolean {
+                return oldItem == newItem
+            }
+
+            override fun areContentsTheSame(oldItem: ListItem, newItem: ListItem): Boolean {
+                return oldItem.equals(newItem)
+            }
+        }
     }
 }
 
