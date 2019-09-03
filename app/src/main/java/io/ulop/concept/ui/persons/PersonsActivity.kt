@@ -1,9 +1,9 @@
 package io.ulop.concept.ui.persons
 
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.Observer
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import io.ulop.concept.R
 import io.ulop.concept.adapter.makeAdapter
 import io.ulop.concept.adapter.personDelegate
@@ -27,7 +27,7 @@ class PersonsActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.title = "Persons"
 
-        recycler.layoutManager = LinearLayoutManager(this)
+        recycler.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this)
         recycler.adapter = adapter
         viewModel.getPersons().observe(this, Observer { persons ->
             adapter.setData(persons?.map {

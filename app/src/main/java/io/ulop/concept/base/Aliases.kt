@@ -1,6 +1,6 @@
 package io.ulop.concept.base
 
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.Observer
 import io.ulop.concept.data.ListItem
 import io.ulop.concept.data.Person
 

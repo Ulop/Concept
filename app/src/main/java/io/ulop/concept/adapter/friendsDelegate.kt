@@ -1,6 +1,6 @@
 package io.ulop.concept.adapter
 
-import android.support.v4.view.MarginLayoutParamsCompat
+import androidx.core.view.MarginLayoutParamsCompat
 import android.view.ViewGroup
 import io.ulop.concept.R
 import io.ulop.concept.base.Action

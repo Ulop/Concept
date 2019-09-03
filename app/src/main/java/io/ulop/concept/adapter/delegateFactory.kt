@@ -1,6 +1,6 @@
 package io.ulop.concept.adapter
 
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import com.hannesdorfmann.adapterdelegates3.AbsListItemAdapterDelegate
@@ -28,8 +28,8 @@ inline fun <reified T : ListItem> AbstractAdapter.delegate(layout: Int, crossinl
 }
 
 inline fun <reified T : ListItem> newDelegate(layout: Int, crossinline block: (View, T) -> Unit) =
-        object : AbsListItemAdapterDelegate<T, ListItem, RecyclerView.ViewHolder>() {
-            override fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
+        object : AbsListItemAdapterDelegate<T, ListItem, androidx.recyclerview.widget.RecyclerView.ViewHolder>() {
+            override fun onCreateViewHolder(parent: ViewGroup): androidx.recyclerview.widget.RecyclerView.ViewHolder {
                 return BaseVH(parent.inflate(layout))
             }
 
@@ -37,13 +37,13 @@ inline fun <reified T : ListItem> newDelegate(layout: Int, crossinline block: (V
                 return item is T
             }
 
-            override fun onBindViewHolder(item: T, viewHolder: RecyclerView.ViewHolder, payloads: MutableList<Any>) {
+            override fun onBindViewHolder(item: T, viewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder, payloads: MutableList<Any>) {
                 block(viewHolder.itemView, item)
             }
 
         }
 
-class BaseVH(view: View) : RecyclerView.ViewHolder(view){
+class BaseVH(view: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(view){
     companion object {
         var count = 0
     }

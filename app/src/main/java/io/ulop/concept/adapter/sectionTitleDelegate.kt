@@ -1,6 +1,6 @@
 package io.ulop.concept.adapter
 
-import android.support.v4.content.ContextCompat
+import androidx.core.content.ContextCompat
 import android.view.View
 import io.ulop.concept.R
 import io.ulop.concept.base.ext.append

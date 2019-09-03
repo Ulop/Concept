@@ -1,38 +1,34 @@
 package io.ulop.concept.ui.person
 
-import android.arch.lifecycle.Observer
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.support.v4.app.DialogFragment
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
-import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import io.ulop.concept.R
 import io.ulop.concept.adapter.*
-import io.ulop.concept.base.ClickObserver
 import io.ulop.concept.base.PersonInfoObserver
-import io.ulop.concept.base.chanel.observeChannel
 import io.ulop.concept.base.ext.appendCounter
 import io.ulop.concept.base.ext.argument
-import io.ulop.concept.base.ext.launchConsumeEach
+import io.ulop.concept.base.flow.asFlow
 import io.ulop.concept.base.viewstate.ViewState
 import io.ulop.concept.common.GlideApp
 import io.ulop.concept.data.ListItem
 import io.ulop.concept.data.Person
 import kotlinx.android.synthetic.main.activity_person_page.*
 import kotlinx.android.synthetic.main.partial_header_buttons.*
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.channels.filter
-import kotlinx.coroutines.experimental.channels.filterNotNull
-import kotlinx.coroutines.experimental.channels.mapNotNull
-import org.koin.android.architecture.ext.viewModel
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.mapNotNull
+import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
+
 
 class PersonPageActivity : AppCompatActivity(), PersonInfoObserver {
 
     private val id by argument<String>("PERSON_ID")
-    private val personViewModel: PersonPageViewModel by viewModel { mapOf("id" to id) }
+    private val personViewModel: PersonPageViewModel by viewModel { parametersOf(id) }
 
     private val adapter by makeAdapter {
         sectionTitleDelegate()
@@ -53,32 +49,35 @@ class PersonPageActivity : AppCompatActivity(), PersonInfoObserver {
             onBackPressed()
         }
 
-        recycler.layoutManager = LinearLayoutManager(this)
+        recycler.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this)
         recycler.adapter = adapter
 
 
         personViewModel.personInfo.observe(this, this)
 
-        personViewModel.viewState.observeChannel(this)
-                .mapNotNull { if (it is ViewState.ItemClick<*> && it.item is ListItem.SectionTitle) it.item else null }
-                .launchConsumeEach(UI) {
-                    when (it.id) {
-                        PersonPageViewModel.SECTION_ABOUT -> {
-                            val index = adapter.items.indexOfFirst { it is ListItem.ExpandableText }
-                            val text = adapter.items[index] as ListItem.ExpandableText
-                            text.expanded = !text.expanded
-                            adapter.notifyItemChanged(index, arrayListOf(""))
-                        }
-                        PersonPageViewModel.SECTION_FRIENDS -> {
-                            FriendSelectDialog().show(supportFragmentManager, "FSD")
+        lifecycleScope.launch {
+            personViewModel.viewState.asFlow()
+                    .mapNotNull { if (it is ViewState.ItemClick<*> && it.item is ListItem.SectionTitle) it.item else null }
+                    .collect {
+                        when (it.id) {
+                            PersonPageViewModel.SECTION_ABOUT -> {
+                                val index = adapter.items.indexOfFirst { it is ListItem.ExpandableText }
+                                val text = adapter.items[index] as ListItem.ExpandableText
+                                text.expanded = !text.expanded
+                                adapter.notifyItemChanged(index, arrayListOf(""))
+                            }
+                            PersonPageViewModel.SECTION_FRIENDS -> {
+                                FriendSelectDialog().show(supportFragmentManager, "FSD")
+                            }
                         }
                     }
-                }
+            personViewModel.viewState.asFlow()
+                    .mapNotNull { (it === ViewState.Idle) }
+                    .filter { it }
+                    .collect { }
+        }
 
-        personViewModel.viewState.observeChannel(this)
-                .mapNotNull { (it === ViewState.Idle) }
-                .filter { it }
-                .launchConsumeEach(UI) { }
+
 
         shots.setOnClickListener {
             val index = adapter.items

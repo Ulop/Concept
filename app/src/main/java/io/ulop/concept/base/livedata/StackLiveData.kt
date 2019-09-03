@@ -1,6 +1,6 @@
 package io.ulop.concept.base.livedata
 
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.MutableLiveData
 import java.util.*
 
 class StackLiveData<T> : MutableLiveData<T>() {

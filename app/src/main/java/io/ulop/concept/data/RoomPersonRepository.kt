@@ -1,16 +1,14 @@
 package io.ulop.concept.data
 
 import android.app.Application
-import android.arch.persistence.room.Room
+import androidx.room.Room
 import io.ulop.concept.db.ConceptDatabase
 import io.ulop.concept.db.entity.PersonFriends
-import kotlinx.coroutines.experimental.async
-import kotlinx.coroutines.experimental.launch
-import kotlinx.coroutines.experimental.runBlocking
-import io.ulop.concept.db.entity.Shot as DBShot
+import kotlinx.coroutines.*
 import io.ulop.concept.db.entity.Person as DBPerson
+import io.ulop.concept.db.entity.Shot as DBShot
 
-class RoomPersonRepository(application: Application) : PersonRepository {
+class RoomPersonRepository(application: Application, val coroutineScope: CoroutineScope) : PersonRepository {
 
     private val dao = Room
             .databaseBuilder(application.applicationContext, ConceptDatabase::class.java, "concept-db")
@@ -40,8 +38,8 @@ class RoomPersonRepository(application: Application) : PersonRepository {
         }
     }
 
-    override fun addPerson(vararg person: Person) {
-        launch {
+    override fun addPerson(vararg person: Person)  {
+        coroutineScope.launch {
             val persons = person.map {
                 with(it) {
                     DBPerson(id, name, surname, avatar, about, place)
@@ -62,13 +60,13 @@ class RoomPersonRepository(application: Application) : PersonRepository {
     }
 
     override fun addFriends(friends: List<Pair<String, String>>) {
-        launch {
+        coroutineScope.launch {
             val dbFriends = friends.map { (personId, friendId) -> PersonFriends(personId, friendId) }
             dao.addFriends(dbFriends)
         }
     }
 
     override fun personCount(): Int {
-        return runBlocking { async { dao.getPersonCount() }.await() }
+        return runBlocking { withContext(Dispatchers.Default) { dao.getPersonCount() } }
     }
 }

@@ -1,19 +1,20 @@
 package io.ulop.concept.ui.persons
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import io.ulop.concept.data.Person
 import io.ulop.concept.data.PersonRepository
-import kotlinx.coroutines.experimental.async
-import kotlinx.coroutines.experimental.runBlocking
-import kotlinx.coroutines.experimental.withContext
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class PersonsViewModel(private val personRepository: PersonRepository) : ViewModel() {
     fun getPersons(): LiveData<List<Person>> {
         val data = MutableLiveData<List<Person>>()
-        data.value = runBlocking {
-            async { personRepository.getPersons() }.await()
+        viewModelScope.launch {
+            data.value = withContext(Dispatchers.Default) { personRepository.getPersons() }
         }
         return data
     }

@@ -1,7 +1,7 @@
 package io.ulop.concept.db
 
-import android.arch.persistence.room.Database
-import android.arch.persistence.room.RoomDatabase
+import androidx.room.Database
+import androidx.room.RoomDatabase
 import io.ulop.concept.db.dao.PersonDao
 import io.ulop.concept.db.entity.Person
 import io.ulop.concept.db.entity.PersonFriends

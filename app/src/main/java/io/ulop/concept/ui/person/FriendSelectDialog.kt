@@ -1,10 +1,10 @@
 package io.ulop.concept.ui.person
 
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.Observer
 import android.content.DialogInterface
 import android.os.Bundle
-import android.support.v4.app.DialogFragment
-import android.support.v7.widget.LinearLayoutManager
+import androidx.fragment.app.DialogFragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -15,10 +15,10 @@ import io.ulop.concept.adapter.makeAdapter
 import io.ulop.concept.base.viewstate.ViewState
 import io.ulop.concept.data.ListItem
 import kotlinx.android.synthetic.main.dialog_fragment_friends.*
-import org.koin.android.architecture.ext.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 
-class FriendSelectDialog : DialogFragment() {
+class FriendSelectDialog : androidx.fragment.app.DialogFragment() {
     private val personPageViewModel: PersonPageViewModel by sharedViewModel()
     private val adapter by makeAdapter {
         friendsDialogDelegate()
@@ -30,7 +30,7 @@ class FriendSelectDialog : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        recycler.layoutManager = LinearLayoutManager(context)
+        recycler.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
         recycler.adapter = adapter
 
         requireActivity()
@@ -55,7 +55,7 @@ class FriendSelectDialog : DialogFragment() {
 
     override fun onDismiss(dialog: DialogInterface?) {
         super.onDismiss(dialog)
-        personPageViewModel.viewState.value = ViewState.Idle
+        personPageViewModel.setState(ViewState.Idle)
     }
 
 }

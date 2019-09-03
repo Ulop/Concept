@@ -1,7 +1,7 @@
 package io.ulop.concept.db.entity
 
-import android.arch.persistence.room.Entity
-import android.arch.persistence.room.ForeignKey
+import androidx.room.Entity
+import androidx.room.ForeignKey
 
 
 @Entity(
